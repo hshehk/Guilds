@@ -30,7 +30,7 @@ base {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion.set(JavaLanguageVersion.of(25))
     }
 
     withSourcesJar()
@@ -38,13 +38,13 @@ java {
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(25)
 }
 
 quark {
     /*
-     * Use Bukkit for the main SpigotMC artifact.
-     * Paper can run Bukkit plugins, but Spigot cannot run Paper-specific loaders.
+     * Guilds is a Bukkit-plugin-format Paper plugin. Paper/Folia both load
+     * plugin.yml, while the implementation uses the shared Paper scheduler APIs.
      */
     platform = "bukkit"
 
@@ -59,7 +59,6 @@ dependencies {
      */
     implementation(libs.acf.paper)
     implementation(libs.bstats.bukkit)
-    implementation(libs.taskchain.bukkit)
     implementation(libs.worldguardwrapper)
     implementation(libs.configme)
     implementation(libs.jsonconfiguration)
@@ -91,7 +90,7 @@ dependencies {
      * Provided by the server or by other plugins at runtime.
      * These must not be bundled or relocated.
      */
-    compileOnly(libs.spigot.api)
+    compileOnly(libs.paper.api)
     compileOnly(libs.vault)
     compileOnly(libs.placeholderapi)
     compileOnly(libs.jsr305)
@@ -138,12 +137,12 @@ extensions.configure<SpotlessExtension> {
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
         javaParameters.set(true)
-        jvmTarget.set(JvmTarget.JVM_11)
+        jvmTarget.set(JvmTarget.JVM_25)
     }
 }
 
 tasks.withType<JavaCompile>().configureEach {
-    options.release.set(11)
+    options.release.set(25)
     options.encoding = "UTF-8"
     options.compilerArgs.addAll(
         listOf(
@@ -223,13 +222,6 @@ tasks.named<ShadowJar>("shadowJar") {
         skipStringConstants = true
     }
     relocate("co.aikar.locales", "$relocationRoot.acf.locales") {
-        skipStringConstants = true
-    }
-
-    /*
-     * TaskChain
-     */
-    relocate("co.aikar.taskchain", "$relocationRoot.taskchain") {
         skipStringConstants = true
     }
 
@@ -325,7 +317,7 @@ indra {
     mitLicense()
 
     javaVersions {
-        target(11)
+        target(25)
     }
 
     github("guilds-plugin", "guilds") {
@@ -344,15 +336,7 @@ data class MinecraftRunTarget(
 )
 
 val supportedMinecraftVersions = listOf(
-    MinecraftRunTarget("1.8.8", 11),
-    MinecraftRunTarget("1.16.5", 16),
-    MinecraftRunTarget("1.18.2", 17),
-    MinecraftRunTarget("1.19.4", 17),
-    MinecraftRunTarget("1.20.6", 21),
-    MinecraftRunTarget("1.21.1", 21),
-    MinecraftRunTarget("1.21.4", 21),
-    MinecraftRunTarget("1.21.8", 21),
-    MinecraftRunTarget("26.1.2", 25)
+    MinecraftRunTarget("26.2", 25)
 )
 
 fun RunServer.configureGuildsRunServer(target: MinecraftRunTarget) {
