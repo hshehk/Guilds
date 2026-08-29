@@ -33,6 +33,10 @@ public final class SchedulerUtils {
         return plugin.getServer().getRegionScheduler().runDelayed(plugin, location, ignored -> task.run(), delayTicks);
     }
 
+    public static ScheduledTask runGlobal(Plugin plugin, Runnable task) {
+        return plugin.getServer().getGlobalRegionScheduler().run(plugin, ignored -> task.run());
+    }
+
     public static ScheduledTask runGlobalLater(Plugin plugin, long delayTicks, Runnable task) {
         return plugin.getServer().getGlobalRegionScheduler().runDelayed(plugin, ignored -> task.run(), delayTicks);
     }

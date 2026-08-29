@@ -41,6 +41,7 @@ import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.BackupUtils
 import me.glaremasters.guilds.utils.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
+import me.glaremasters.guilds.utils.SchedulerUtils
 import org.codemc.worldguardwrapper.WorldGuardWrapper
 
 @CommandAlias("%guilds")
@@ -65,13 +66,17 @@ internal class CommandConsole : BaseCommand() {
         actionHandler.addAction(issuer.getIssuer(), object : ConfirmAction {
             override fun accept() {
                 guilds.commandManager.getCommandIssuer(issuer.getIssuer()).sendInfo(Messages.BACKUP__STARTED)
-                Guilds.newChain<Any>().async {
+                SchedulerUtils.runAsync(guilds) {
                     try {
                         BackupUtils.zipDir("guilds-backup-" + System.currentTimeMillis() + ".zip", guilds.dataFolder.path)
                     } catch (e: Exception) {
                         e.printStackTrace()
+                    } finally {
+                        SchedulerUtils.runGlobal(guilds) {
+                            guilds.commandManager.getCommandIssuer(issuer.getIssuer()).sendInfo(Messages.BACKUP__FINISHED)
+                        }
                     }
-                }.sync { guilds.commandManager.getCommandIssuer(issuer.getIssuer()).sendInfo(Messages.BACKUP__FINISHED) }.execute()
+                }
                 actionHandler.removeAction(issuer.getIssuer())
             }
 
@@ -96,36 +101,44 @@ internal class CommandConsole : BaseCommand() {
         actionHandler.addAction(issuer.getIssuer(), object : ConfirmAction {
             override fun accept() {
                 val resolvedBackend = DatabaseBackend.getByBackendName(toBackend) ?: throw ExpectationNotMet(Messages.MIGRATE__INVALID_BACKEND)
-                Guilds.newChain<Any>().async {
+                SchedulerUtils.runAsync(guilds) {
+                    var failureMessage = Messages.MIGRATE__CONNECTION_FAILED
+                    var failed = false
                     try {
                         guildHandler.isMigrating = true
                         val resolvedAdapter = guilds.database.cloneWith(resolvedBackend)
                         if (!resolvedAdapter.isConnected) {
-                            guildHandler.isMigrating = false
-                            throw ExpectationNotMet(Messages.MIGRATE__CONNECTION_FAILED)
+                            failed = true
+                        } else {
+                            resolvedAdapter.guildAdapter.saveGuilds(guildHandler.guilds.values)
+                            resolvedAdapter.arenaAdapter.saveArenas(arenaHandler.getArenas())
+                            resolvedAdapter.cooldownAdapter.saveCooldowns(cooldownHandler.cooldowns.values)
+                            resolvedAdapter.challengeAdapter.saveChallenges(challengeHandler.challenges)
+
+                            val old = guilds.database
+                            guilds.database = resolvedAdapter
+                            old.close()
                         }
-
-                        resolvedAdapter.guildAdapter.saveGuilds(guildHandler.guilds.values)
-                        resolvedAdapter.arenaAdapter.saveArenas(arenaHandler.getArenas())
-                        resolvedAdapter.cooldownAdapter.saveCooldowns(cooldownHandler.cooldowns.values)
-                        resolvedAdapter.challengeAdapter.saveChallenges(challengeHandler.challenges)
-
-                        val old = guilds.database
-                        guilds.database = resolvedAdapter
-                        old.close()
-
-                        guildHandler.isMigrating = false
                     } catch (ex: IllegalArgumentException) {
-                        guildHandler.isMigrating = false
-                        throw ExpectationNotMet(Messages.MIGRATE__SAME_BACKEND)
+                        failed = true
+                        failureMessage = Messages.MIGRATE__SAME_BACKEND
                     } catch (ex: IOException) {
-                        guildHandler.isMigrating = false
+                        failed = true
                         ex.printStackTrace()
+                    } finally {
+                        guildHandler.isMigrating = false
                     }
-                }.sync {
-                    guilds.commandManager.getCommandIssuer(issuer.getIssuer()).sendInfo(Messages.MIGRATE__COMPLETE, "{amount}", guildHandler.guildsSize.toString())
-                    actionHandler.removeAction(issuer.getIssuer())
-                }.execute()
+
+                    SchedulerUtils.runGlobal(guilds) {
+                        val commandIssuer = guilds.commandManager.getCommandIssuer(issuer.getIssuer())
+                        if (failed) {
+                            commandIssuer.sendInfo(failureMessage)
+                        } else {
+                            commandIssuer.sendInfo(Messages.MIGRATE__COMPLETE, "{amount}", guildHandler.guildsSize.toString())
+                            actionHandler.removeAction(issuer.getIssuer())
+                        }
+                    }
+                }
             }
 
             override fun decline() {

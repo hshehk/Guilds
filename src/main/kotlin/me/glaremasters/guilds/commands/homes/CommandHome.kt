@@ -45,8 +45,8 @@ import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import me.glaremasters.guilds.utils.EconomyUtils
+import me.glaremasters.guilds.utils.SchedulerUtils
 import net.milkbowl.vault.economy.Economy
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
@@ -90,7 +90,7 @@ internal class CommandHome : BaseCommand() {
             val loc = player.location
             val wait = settingsManager.getProperty(CooldownSettings.WU_HOME)
             currentCommandIssuer.sendInfo(Messages.HOME__WARMUP, "{amount}", wait.toString())
-            Guilds.newChain<Any>().delay(wait, TimeUnit.SECONDS).sync {
+            SchedulerUtils.runEntityLater(guilds, player, wait * 20L) {
                 val curr = player.location
                 if (loc.distance(curr) > 1) {
                     guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__CANCELLED)
@@ -98,7 +98,7 @@ internal class CommandHome : BaseCommand() {
                     player.teleport(home.asLocation)
                     guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED)
                 }
-            }.execute()
+            }
         } else {
             player.teleport(home.asLocation)
             currentCommandIssuer.sendInfo(Messages.HOME__TELEPORTED)

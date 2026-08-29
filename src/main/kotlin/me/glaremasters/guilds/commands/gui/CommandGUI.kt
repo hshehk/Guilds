@@ -39,6 +39,7 @@ import me.glaremasters.guilds.exceptions.InvalidTierException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
+import me.glaremasters.guilds.utils.SchedulerUtils
 import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
@@ -71,12 +72,12 @@ internal class CommandGUI : BaseCommand() {
     @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "list")
     fun list(player: Player) {
-        val chain = Guilds.newChain<Any>()
-        chain.async {
-            chain.setTaskData("data", guilds.guiHandler.list.get(player))
-        } .sync {
-            (chain.getTaskData<Any>("data") as PaginatedGui).open(player)
-        }.execute()
+        SchedulerUtils.runAsync(guilds) {
+            val gui = guilds.guiHandler.list.get(player)
+            SchedulerUtils.runEntity(guilds, player) {
+                gui.open(player)
+            }
+        }
     }
 
     @Subcommand("members")

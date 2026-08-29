@@ -39,6 +39,7 @@ import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildRolePerm
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.EconomyUtils
+import me.glaremasters.guilds.utils.SchedulerUtils
 import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
 import org.bukkit.entity.Player
@@ -124,7 +125,7 @@ class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsM
                 val initial = player.location
                 val delay = settingsManager.getProperty(CooldownSettings.WU_HOME)
                 manager.getCommandIssuer(player).sendInfo(Messages.HOME__WARMUP, "{amount}", delay.toString())
-                Guilds.newChain<Any>().delay(delay, TimeUnit.SECONDS).sync {
+                SchedulerUtils.runEntityLater(guilds, player, delay * 20L) {
                     val curr = player.location
                     if (initial.distance(curr) > 1) {
                         guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__CANCELLED)
@@ -132,7 +133,7 @@ class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsM
                         player.teleport(teleportingTo)
                         guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED)
                     }
-                }.execute()
+                }
             } else {
                 player.teleport(teleportingTo)
                 manager.getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED)
