@@ -100,7 +100,7 @@ internal class CommandWar : BaseCommand() {
         val joinMsg = currentCommandManager.locales.getMessage(currentCommandIssuer, Messages.WAR__ACTION_BAR_JOIN.messageKey)
         val readyMsg = currentCommandManager.locales.getMessage(currentCommandIssuer, Messages.WAR__ACTION_BAR_READY.messageKey)
 
-        GuildWarJoinTask(guilds, joinTime, readyTime, online, joinMsg, readyMsg, challenge, challengeHandler).runTaskTimer(guilds, 0L, 20L)
+        GuildWarJoinTask(guilds, joinTime, readyTime, online, joinMsg, readyMsg, challenge, challengeHandler).start()
     }
 
     @Subcommand("war challenge")
@@ -166,7 +166,7 @@ internal class CommandWar : BaseCommand() {
 
         challengeHandler.pingOnlineDefenders(targetGuild, guilds.commandManager, guild.name, acceptTime)
 
-        GuildWarChallengeCheckTask(guilds, challenge, challengeHandler).runTaskLater(guilds, (acceptTime * 20).toLong())
+        GuildWarChallengeCheckTask(guilds, challenge, challengeHandler).start((acceptTime * 20).toLong())
     }
 
     @Subcommand("war deny")

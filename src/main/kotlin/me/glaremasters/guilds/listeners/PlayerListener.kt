@@ -33,12 +33,12 @@ import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.LoggingUtils
+import me.glaremasters.guilds.utils.SchedulerUtils
 import me.glaremasters.guilds.utils.StringUtils
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import net.milkbowl.vault.permission.Permission
-import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -59,16 +59,20 @@ class PlayerListener(private val guilds: Guilds, private val settingsManager: Se
         if (informed.contains(player.uniqueId)) {
             return
         }
-        Guilds.newChain<Any>().delay(5, TimeUnit.SECONDS).async {
+        SchedulerUtils.runAsyncLater(guilds, 5L, TimeUnit.SECONDS) {
             try {
                 val hover = HoverEvent.showText(serializer.deserialize(StringUtils.getAnnouncements(guilds)))
                 val click = ClickEvent.openUrl(guilds.description.website.toString())
                 val announcement = serializer.deserialize("§f[§aGuilds§f]§r Announcements (Hover over me for more information)").clickEvent(click).hoverEvent(hover)
-                guilds.adventure.sender(player).sendMessage(announcement)
+                SchedulerUtils.runEntity(guilds, player) {
+                    if (player.isOnline) {
+                        guilds.adventure.sender(player).sendMessage(announcement)
+                    }
+                }
             } catch (e: IOException) {
                 LoggingUtils.warn("Unable to fetch in-game announcements for ${player.name}.", e)
             }
-        }.execute()
+        }
         informed.add(player.uniqueId)
     }
 
@@ -80,9 +84,9 @@ class PlayerListener(private val guilds: Guilds, private val settingsManager: Se
         if (!settingsManager.getProperty(GuildSettings.MOTD_ON_LOGIN)) {
             return
         }
-        Bukkit.getScheduler().runTaskLater(guilds, Runnable {
+        SchedulerUtils.runEntityLater(guilds, player, 100L) {
             guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.MOTD__MOTD, "{motd}", motd)
-        }, 100L)
+        }
     }
 
     @EventHandler

@@ -30,8 +30,8 @@ import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.challenges.ChallengeHandler
 import me.glaremasters.guilds.configuration.sections.WarSettings
 import me.glaremasters.guilds.messages.Messages
+import me.glaremasters.guilds.utils.SchedulerUtils
 import me.glaremasters.guilds.utils.Constants
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
@@ -85,11 +85,11 @@ class ArenaListener(private val guilds: Guilds, private val challengeHandler: Ch
         if (player.uniqueId !in playerDeath) {
             return
         }
-        Bukkit.getScheduler().runTaskLater(guilds, Runnable {
+        SchedulerUtils.runEntityLater(guilds, player, 1L) {
             val loc = ACFBukkitUtil.stringToLocation(playerDeath[player.uniqueId])
             player.teleport(loc)
             playerDeath.remove(player.uniqueId)
-        }, 1L)
+        }
     }
 
     @EventHandler
