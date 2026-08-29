@@ -1,6 +1,6 @@
 ---
-  pvp: "Activa"
 descriptions:
+  pvp: "Activa"
   accept: "Accept a guild invite"
   admin-addplayer: "Admin command to add a player to a Guild"
   admin-prefix: "Admin command to change a Guild's prefix"

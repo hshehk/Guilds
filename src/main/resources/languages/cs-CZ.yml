@@ -1,6 +1,6 @@
 ---
-  pvp: "Povolí"
 descriptions:
+  pvp: "Povolí"
   accept: "Přijmout pozvánku do cechu"
   admin-addplayer: "Administrátorský příkaz pro přidání hráče do cechu"
   admin-bank-balance: "Administrátorský příkaz pro zobrazení zůstatku cechu"

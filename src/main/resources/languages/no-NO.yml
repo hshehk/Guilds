@@ -1,6 +1,6 @@
 ---
-  pvp: "Aktiver"
 descriptions:
+  pvp: "Aktiver"
   accept: "Aksepter en guild innvitasjon"
   admin-addplayer: "Admin kommando for å ligge til en spiller på en guild"
   admin-bank-balance: "Admin kommando for å se din guilds penger i banken"

@@ -1,6 +1,6 @@
 ---
-  pvp: "Включва"
 descriptions:
+  pvp: "Включва"
   accept: "Приема покана за гилдия"
   admin-addplayer: "Администраторска команда, с която да добавите играч в Гилдия"
   admin-bank-balance: "Admin command to view a guild's bank balance"

@@ -1,6 +1,6 @@
 ---
-  pvp: "Loncanızın üyeleri arasındaki PvPyi açar veya kapatır"
 descriptions:
+  pvp: "Loncanızın üyeleri arasındaki PvPyi açar veya kapatır"
   accept: "Lonca davetini kabul et"
   admin-addplayer: "Bir Loncaya oyuncu eklemek için yönetici komutu"
   admin-bank-balance: "Bir loncanın banka bakiyesini görüntülemek için yönetici komutu"

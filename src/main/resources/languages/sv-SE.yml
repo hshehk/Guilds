@@ -1,6 +1,6 @@
 ---
-  pvp: "Aktiverar eller inaktiverar PvP mellan medlemmar i din Guild"
 descriptions:
+  pvp: "Aktiverar eller inaktiverar PvP mellan medlemmar i din Guild"
   accept: "Acceptera guild inbjudan"
   admin-addplayer: "Admin kommandon för att lägga till en spelare i en guild"
   admin-bank-balance: "Admin-kommando för att se guildens saldo"

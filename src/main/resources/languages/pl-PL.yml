@@ -1,6 +1,6 @@
 ---
-  pvp: "Włącza"
 descriptions:
+  pvp: "Włącza"
   accept: "Zaakceptuj zaproszenie do gildii."
   admin-addplayer: "Komenda administratora aby zaprosić gracza do gildii"
   admin-bank-balance: "Komenda administratorska by przejrzeć balans gildii."

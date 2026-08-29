@@ -1,6 +1,6 @@
 ---
-  pvp: "Bật"
 descriptions:
+  pvp: "Bật"
   accept: "Chấp nhận một lời mời tham gia guild"
   admin-addplayer: "Lệnh Admin để thêm một người chơi vào một Guild"
   admin-bank-balance: "Lệnh cho quản trị viên để xem số tiền của guild"

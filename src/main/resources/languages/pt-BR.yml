@@ -1,6 +1,6 @@
 ---
-  pvp: "Ativa ou desativa o PvP entre os membros da sua Guilda"
 descriptions:
+  pvp: "Ativa ou desativa o PvP entre os membros da sua Guilda"
   accept: "Aceitar um convite de guilda"
   admin-addplayer: "Comando administrativo para adicionar um jogador em uma Guilda"
   admin-bank-balance: "Comando administrativo para ver o saldo do banco de uma guilda"

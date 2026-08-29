@@ -1,6 +1,6 @@
 ---
-  pvp: "Schakel PvP tussen leden van je Guild in of uit"
 descriptions:
+  pvp: "Schakel PvP tussen leden van je Guild in of uit"
   accept: "Accepteer een Guild uitnodiging"
   admin-addplayer: "Admin command om een speler aan een Guild toe te voegen"
   admin-bank-balance: "Admin command om een Guild's bank te bekijken"

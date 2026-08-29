@@ -1,6 +1,6 @@
 ---
-  pvp: "Activează"
 descriptions:
+  pvp: "Activează"
   accept: "Accepta o invitatie in breasla"
   admin-addplayer: "Comanda pentru admini pentru a adauga un membru in breasla"
   admin-bank-balance: "Admin command to view a guild's bank balance"

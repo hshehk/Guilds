@@ -1,6 +1,6 @@
 ---
-  pvp: "Aktiviert"
 descriptions:
+  pvp: "Aktiviert"
   accept: "Eine Gildeneinladung annehmen"
   admin-addplayer: "Admin-Befehl, um einen Spieler einer Gilde hinzuzufügen"
   admin-bank-balance: "Admin-Befehl zum Anzeigen des Guthabens einer Gilde"

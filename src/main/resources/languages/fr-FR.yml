@@ -1,6 +1,6 @@
 ---
-  pvp: "Active ou désactive le PvP entre les membres de votre Guilde"
 descriptions:
+  pvp: "Active ou désactive le PvP entre les membres de votre Guilde"
   accept: "Accepter une invitation de guilde"
   admin-addplayer: "Commande admin pour ajouter un joueur dans une guilde"
   admin-bank-balance: "Commande administrateur pour voir le solde de la banque d'une guilde"

@@ -1,6 +1,6 @@
 ---
-  pvp: "Engedélyezi"
 descriptions:
+  pvp: "Engedélyezi"
   accept: "Fogadjon el egy céh meghívást"
   admin-addplayer: "Adminisztrátori parancs egy játékos hozzáadásához a céhhez"
   admin-bank-balance: "Admin command to view a guild's bank balance"
