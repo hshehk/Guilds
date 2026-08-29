@@ -36,6 +36,7 @@ import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRolePerm;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.LoggingUtils;
+import me.glaremasters.guilds.utils.SchedulerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -54,6 +55,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Glare
@@ -200,7 +202,7 @@ public class ChallengeHandler {
      * @return enough players online
      */
     public boolean checkEnoughOnline(@NotNull Guild challenger, @NotNull Guild defender, int amount) {
-        return challenger.getOnlineAsPlayers().size() >= amount && defender.getOnlineAsPlayers().size() >= amount;
+        return challenger.getOnlineAsUUIDs().size() >= amount && defender.getOnlineAsUUIDs().size() >= amount;
     }
 
     /**
@@ -235,6 +237,60 @@ public class ChallengeHandler {
     }
 
     /**
+     * Captures player locations on their owning entity threads, then continues on the global region.
+     * This avoids reading Player#getLocation from Folia's global region.
+     */
+    public void prepareFinalListsAsync(@NotNull GuildChallenge challenge, @NotNull Runnable continuation) {
+        prepareFinalListAsync(challenge.getChallengePlayers(), challenge, true, () ->
+                prepareFinalListAsync(challenge.getDefendPlayers(), challenge, false, () ->
+                        SchedulerUtils.runGlobalLater(guilds, 0L, continuation)));
+    }
+
+    private void prepareFinalListAsync(@NotNull List<UUID> players, @NotNull GuildChallenge challenge, boolean challenger, @NotNull Runnable completion) {
+        final LinkedHashMap<UUID, String> finalList = new LinkedHashMap<>();
+        final AtomicInteger remaining = new AtomicInteger(players.size());
+
+        if (players.isEmpty()) {
+            if (challenger) {
+                challenge.setAliveChallengers(finalList);
+            } else {
+                challenge.setAliveDefenders(finalList);
+            }
+            completion.run();
+            return;
+        }
+
+        players.forEach(uuid -> {
+            final Player player = Bukkit.getPlayer(uuid);
+            if (player == null) {
+                if (remaining.decrementAndGet() == 0) {
+                    if (challenger) {
+                        challenge.setAliveChallengers(finalList);
+                    } else {
+                        challenge.setAliveDefenders(finalList);
+                    }
+                    completion.run();
+                }
+                return;
+            }
+
+            SchedulerUtils.runEntity(guilds, player, () -> {
+                synchronized (finalList) {
+                    finalList.putIfAbsent(uuid, ACFBukkitUtil.fullLocationToString(player.getLocation()));
+                }
+                if (remaining.decrementAndGet() == 0) {
+                    if (challenger) {
+                        challenge.setAliveChallengers(finalList);
+                    } else {
+                        challenge.setAliveDefenders(finalList);
+                    }
+                    completion.run();
+                }
+            });
+        });
+    }
+
+    /**
      * Send players to arena
      * @param players the players to send
      * @param location the location to send them to
@@ -248,7 +304,7 @@ public class ChallengeHandler {
         players.keySet().forEach(p -> {
             Player player = Bukkit.getPlayer(p);
             if (player != null) {
-                player.teleport(location);
+                SchedulerUtils.runEntity(guilds, player, () -> player.teleport(location));
             }
         });
     }
@@ -288,12 +344,10 @@ public class ChallengeHandler {
                 return;
             }
 
-            Bukkit.getScheduler().runTaskLater(guilds, () -> {
-                final Player player = Bukkit.getPlayer(key);
-                if (player != null) {
-                    player.teleport(location);
-                }
-            }, 1L);
+            final Player player = Bukkit.getPlayer(key);
+            if (player != null) {
+                SchedulerUtils.runEntityLater(guilds, player, 1L, () -> player.teleport(location));
+            }
         });
     }
 
@@ -371,8 +425,8 @@ public class ChallengeHandler {
         getAllPlayersAlive(challenge).keySet().forEach(p -> {
             final Player target = Bukkit.getPlayer(p);
             if (target != null) {
-                guilds.getCommandManager().getCommandIssuer(target)
-                        .sendInfo(message, "{player}", player.getName(), "{killer}", killer.getName());
+                SchedulerUtils.runEntity(guilds, target, () -> guilds.getCommandManager().getCommandIssuer(target)
+                        .sendInfo(message, "{player}", player.getName(), "{killer}", killer.getName()));
             }
         });
     }

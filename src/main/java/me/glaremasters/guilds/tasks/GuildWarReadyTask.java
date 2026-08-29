@@ -1,52 +1,25 @@
-/*
- * MIT License
- *
- * Copyright (c) 2023 Glare
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
 package me.glaremasters.guilds.tasks;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.challenges.GuildWarStartEvent;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.SchedulerUtils;
 import me.glaremasters.guilds.utils.WarUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Created by Glare
- * Date: 7/13/2019
- * Time: 6:49 PM
- */
-public class GuildWarReadyTask extends BukkitRunnable {
-
+/** Handles the war ready countdown using Paper/Folia schedulers. */
+public final class GuildWarReadyTask {
     private final Guilds guilds;
     private int timeLeft;
     private final List<UUID> players;
@@ -54,6 +27,8 @@ public class GuildWarReadyTask extends BukkitRunnable {
     private final GuildChallenge challenge;
     private final ChallengeHandler challengeHandler;
     private final String notifyType;
+    private ScheduledTask task;
+    private boolean preparingFinalLists;
 
     public GuildWarReadyTask(Guilds guilds, int timeLeft, List<UUID> players, String message, GuildChallenge challenge, ChallengeHandler challengeHandler) {
         this.guilds = guilds;
@@ -65,65 +40,77 @@ public class GuildWarReadyTask extends BukkitRunnable {
         this.notifyType = guilds.getSettingsHandler().getMainConf().getProperty(WarSettings.NOTIFY_TYPE);
     }
 
-    @Override
-    public void run() {
-        players.forEach(p -> {
-            final Player player = Bukkit.getPlayer(p);
+    public void start() {
+        this.task = SchedulerUtils.runGlobalRepeating(guilds, 0L, 20L, this::run);
+    }
+
+    private void run() {
+        players.forEach(uuid -> {
+            Player player = Bukkit.getPlayer(uuid);
             if (player != null) {
-                WarUtils.notify(notifyType, message.replace("{amount}", String.valueOf(timeLeft)), guilds.getAdventure().player(player));
+                SchedulerUtils.runEntity(guilds, player, () -> WarUtils.notify(
+                        notifyType, message.replace("{amount}", String.valueOf(timeLeft)), guilds.getAdventure().player(player)));
             }
         });
+
         timeLeft--;
-        if (timeLeft == 0) {
-            challenge.setJoinble(false);
-            if (!challengeHandler.checkEnoughOnline(challenge.getChallenger(), challenge.getDefender(), challenge.getMinPlayersPerSide())) {
-                challenge.getChallenger().sendMessage(guilds.getCommandManager(), Messages.WAR__NOT_ENOUGH_ON);
-                challenge.getDefender().sendMessage(guilds.getCommandManager(), Messages.WAR__NOT_ENOUGH_ON);
-                challenge.getArena().setInUse(false);
-                challengeHandler.removeChallenge(challenge);
-                cancel();
-                return;
-            }
-            // Create final list for both sides
-            challengeHandler.prepareFinalList(challenge.getChallengePlayers(), challenge, "challenger");
-            challengeHandler.prepareFinalList(challenge.getDefendPlayers(), challenge, "defender");
-
-            List<String> heldBack = new ArrayList<>();
-            // Make sure both are the same size
-            if (challenge.getAliveDefenders().size() > challenge.getAliveChallengers().size()) {
-                do {
-                    UUID last = Iterables.getLast(challenge.getAliveDefenders().entrySet()).getKey();
-                    heldBack.add(getPlayerName(last));
-                    challenge.getAliveDefenders().remove(last);
-                } while (challenge.getAliveDefenders().size() != challenge.getAliveChallengers().size());
-            } else if (challenge.getAliveChallengers().size() > challenge.getAliveDefenders().size()) {
-                do {
-                    UUID last = Iterables.getLast(challenge.getAliveChallengers().entrySet()).getKey();
-                    heldBack.add(getPlayerName(last));
-                    challenge.getAliveChallengers().remove(last);
-                } while (challenge.getAliveChallengers().size() != challenge.getAliveDefenders().size());
-            }
-
-            if (!heldBack.isEmpty()) {
-                String heldBackMessage = Joiner.on(", ").join(heldBack);
-                challenge.getChallenger().sendMessage(guilds.getCommandManager(), Messages.WAR__REMOVED_FOR_SIZE, "{players}", heldBackMessage);
-                challenge.getDefender().sendMessage(guilds.getCommandManager(), Messages.WAR__REMOVED_FOR_SIZE, "{players}", heldBackMessage);
-            }
-            heldBack.clear();
-
-            // Send them both to the arena
-            challengeHandler.sendToArena(challenge.getAliveChallengers(), challenge.getArena().getChallengerLoc());
-            challengeHandler.sendToArena(challenge.getAliveDefenders(), challenge.getArena().getDefenderLoc());
-            challenge.setStarted(true);
-            challenge.getDefender().setLastDefended(System.currentTimeMillis());
-            Bukkit.getPluginManager().callEvent(new GuildWarStartEvent(challenge.getChallenger(), challenge.getDefender()));
-            cancel();
+        if (timeLeft != 0) {
+            return;
         }
+        if (preparingFinalLists) {
+            return;
+        }
+
+        challenge.setJoinble(false);
+        if (!challengeHandler.checkEnoughOnline(challenge.getChallenger(), challenge.getDefender(), challenge.getMinPlayersPerSide())) {
+            challenge.getChallenger().sendMessage(guilds.getCommandManager(), Messages.WAR__NOT_ENOUGH_ON);
+            challenge.getDefender().sendMessage(guilds.getCommandManager(), Messages.WAR__NOT_ENOUGH_ON);
+            challenge.getArena().setInUse(false);
+            challengeHandler.removeChallenge(challenge);
+            cancel();
+            return;
+        }
+
+        preparingFinalLists = true;
+        challengeHandler.prepareFinalListsAsync(challenge, this::finishWar);
+    }
+
+    private void finishWar() {
+        List<String> heldBack = new ArrayList<>();
+        while (challenge.getAliveDefenders().size() > challenge.getAliveChallengers().size()) {
+            UUID last = Iterables.getLast(challenge.getAliveDefenders().entrySet()).getKey();
+            heldBack.add(getPlayerName(last));
+            challenge.getAliveDefenders().remove(last);
+        }
+        while (challenge.getAliveChallengers().size() > challenge.getAliveDefenders().size()) {
+            UUID last = Iterables.getLast(challenge.getAliveChallengers().entrySet()).getKey();
+            heldBack.add(getPlayerName(last));
+            challenge.getAliveChallengers().remove(last);
+        }
+
+        if (!heldBack.isEmpty()) {
+            String heldBackMessage = Joiner.on(", ").join(heldBack);
+            challenge.getChallenger().sendMessage(guilds.getCommandManager(), Messages.WAR__REMOVED_FOR_SIZE, "{players}", heldBackMessage);
+            challenge.getDefender().sendMessage(guilds.getCommandManager(), Messages.WAR__REMOVED_FOR_SIZE, "{players}", heldBackMessage);
+        }
+
+        challengeHandler.sendToArena(challenge.getAliveChallengers(), challenge.getArena().getChallengerLoc());
+        challengeHandler.sendToArena(challenge.getAliveDefenders(), challenge.getArena().getDefenderLoc());
+        challenge.setStarted(true);
+        challenge.getDefender().setLastDefended(System.currentTimeMillis());
+        Bukkit.getPluginManager().callEvent(new GuildWarStartEvent(challenge.getChallenger(), challenge.getDefender()));
+        cancel();
     }
 
     private String getPlayerName(UUID uuid) {
-        final Player player = Bukkit.getPlayer(uuid);
+        Player player = Bukkit.getPlayer(uuid);
         return player == null ? uuid.toString() : player.getName();
     }
 
+    private void cancel() {
+        if (task != null) {
+            task.cancel();
+            task = null;
+        }
+    }
 }

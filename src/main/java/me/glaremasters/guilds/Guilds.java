@@ -24,9 +24,6 @@
 package me.glaremasters.guilds;
 
 import co.aikar.commands.PaperCommandManager;
-import co.aikar.taskchain.BukkitTaskChainFactory;
-import co.aikar.taskchain.TaskChain;
-import co.aikar.taskchain.TaskChainFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.glaremasters.guilds.acf.ACFHandler;
@@ -56,6 +53,7 @@ import me.glaremasters.guilds.placeholders.PlaceholderAPI;
 import me.glaremasters.guilds.updater.UpdateChecker;
 import me.glaremasters.guilds.utils.LanguageUpdater;
 import me.glaremasters.guilds.utils.LoggingUtils;
+import me.glaremasters.guilds.utils.SchedulerUtils;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.milkbowl.vault.economy.Economy;
@@ -81,7 +79,6 @@ public final class Guilds extends JavaPlugin {
     private CooldownHandler cooldownHandler;
     private ArenaHandler arenaHandler;
     private ChallengeHandler challengeHandler;
-    private static TaskChainFactory taskChainFactory;
     private DatabaseAdapter database;
     private SettingsHandler settingsHandler;
     private PaperCommandManager commandManager;
@@ -92,6 +89,7 @@ public final class Guilds extends JavaPlugin {
     private BukkitAudiences adventure;
     private ChatListener chatListener;
     private BukkitLibraryManager libraryManager;
+    private io.papermc.paper.threadedregions.scheduler.ScheduledTask saveTask;
 
     public static Gson getGson() {
         return gson;
@@ -109,6 +107,10 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (saveTask != null) {
+            saveTask.cancel();
+            saveTask = null;
+        }
         if (checkVault() && economy != null) {
             try {
                 if (guildHandler != null) {
@@ -123,9 +125,6 @@ public final class Guilds extends JavaPlugin {
             } catch (IOException e) {
                 LoggingUtils.severe("An error occurred while saving plugin data during shutdown.", e);
             }
-            guildHandler.chatLogout();
-            guildHandler.getLookupCache().clear();
-            commandManager.unregisterCommands();
             if (guildHandler != null) {
                 guildHandler.chatLogout();
                 guildHandler.getLookupCache().clear();
@@ -208,9 +207,6 @@ public final class Guilds extends JavaPlugin {
         // A variable for checking how long startup took.
         long startingTime = System.currentTimeMillis();
 
-        // Load up TaskChain
-        taskChainFactory = BukkitTaskChainFactory.create(this);
-
         new LanguageUpdater(this).saveLang();
 
         // Load data here.
@@ -260,13 +256,13 @@ public final class Guilds extends JavaPlugin {
         guiHandler = new GUIHandler(this, settingsHandler.getMainConf(), guildHandler, getCommandManager(), cooldownHandler);
 
         if (settingsHandler.getMainConf().getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
-            newChain().async(() -> {
+            SchedulerUtils.runAsync(this, () -> {
                 try {
                     LoggingUtils.info(StringUtils.getAnnouncements(this));
                 } catch (IOException e) {
                     LoggingUtils.warn("Unable to fetch console announcements.", e);
                 }
-            }).execute();
+            });
         }
 
         UpdateChecker.runCheck(this, settingsHandler.getMainConf());
@@ -287,19 +283,18 @@ public final class Guilds extends JavaPlugin {
         chatListener = new ChatListener(this);
 
         LoggingUtils.info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
-        getServer().getScheduler().scheduleAsyncRepeatingTask(this, () -> {
+        this.saveTask = this.getServer().getAsyncScheduler().runAtFixedRate(this, ignored -> {
             try {
                 if (guildHandler.isMigrating()) {
                     return;
                 }
                 guildHandler.saveData();
-                //cooldownHandler.saveCooldowns(); We are going to save on shutdown only, no need for runtime saving
                 arenaHandler.saveArenas();
                 challengeHandler.saveData();
             } catch (IOException e) {
                 LoggingUtils.severe("An error occurred while saving plugin data during the scheduled save task.", e);
             }
-        }, 20 * 60, (20 * 60) * settingsHandler.getMainConf().getProperty(StorageSettings.SAVE_INTERVAL));
+        }, 1L, 60L * settingsHandler.getMainConf().getProperty(StorageSettings.SAVE_INTERVAL), java.util.concurrent.TimeUnit.SECONDS);
     }
 
     /**
@@ -352,26 +347,6 @@ public final class Guilds extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ClaimSignListener(this, settingsHandler.getMainConf(), guildHandler, wrapper), this);
     }
 
-    /**
-     * Used to create a new chain of commands
-     *
-     * @param <T> the type
-     * @return chain
-     */
-    public static <T> TaskChain<T> newChain() {
-        return taskChainFactory.newChain();
-    }
-
-    /**
-     * Used to create new shared chain of commands
-     *
-     * @param name the name of the chain
-     * @param <T>  the type of chain
-     * @return shared chain
-     */
-    public static <T> TaskChain<T> newSharedChain(String name) {
-        return taskChainFactory.newSharedChain(name);
-    }
 
     public ACFHandler getAcfHandler() {
         return this.acfHandler;

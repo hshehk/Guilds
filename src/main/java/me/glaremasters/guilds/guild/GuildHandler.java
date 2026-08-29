@@ -38,6 +38,7 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.LoggingUtils;
+import me.glaremasters.guilds.utils.SchedulerUtils;
 import me.glaremasters.guilds.utils.Serialization;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.permission.Permission;
@@ -810,13 +811,13 @@ public class GuildHandler {
      */
     public void removePerms(final Permission permission, final OfflinePlayer offlinePlayer, final List<String> nodes) {
         if (settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)) {
-            Guilds.newChain().async(() -> {
+            SchedulerUtils.runAsync(guilds, () -> {
                 for (final String node : nodes) {
                     if (!node.equals("")) {
                         permission.playerRemove(null, offlinePlayer, node);
                     }
                 }
-            }).execute();
+            });
         } else {
             for (final String node : nodes) {
                 if (!node.equals("")) {
@@ -834,13 +835,13 @@ public class GuildHandler {
      */
     public void addPerms(final Permission permission, final OfflinePlayer offlinePlayer, final List<String> nodes) {
         if (settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)) {
-            Guilds.newChain().async(() -> {
+            SchedulerUtils.runAsync(guilds, () -> {
                 for (final String node : nodes) {
                     if (!node.equals("")) {
                         permission.playerAdd(null, offlinePlayer, node);
                     }
                 }
-            }).execute();
+            });
         } else {
             for (final String node : nodes) {
                 if (!node.equals("")) {

@@ -441,7 +441,7 @@ public class Guild {
         getOnlineMembers().forEach(m -> {
             final Player player = Bukkit.getPlayer(m.getUuid());
             if (player != null) {
-                manager.getCommandIssuer(player).sendInfo(key, replacements);
+                SchedulerUtils.runEntity(guilds, player, () -> manager.getCommandIssuer(player).sendInfo(key, replacements));
             }
         });
     }
@@ -451,7 +451,7 @@ public class Guild {
      * @param message the message to send
      */
     public void sendMessage(String message) {
-        getOnlineAsPlayers().forEach(m -> m.sendMessage(message));
+        getOnlineAsPlayers().forEach(m -> SchedulerUtils.runEntity(guilds, m, () -> m.sendMessage(message)));
     }
 
     /**
@@ -587,17 +587,17 @@ public class Guild {
     }
 
     public void updateGuildSkull(Player player, SettingsManager settingsManager) {
-        Guilds.newChain().async(() -> {
+        SchedulerUtils.runEntity(guilds, player, () -> {
             try {
                 guildSkull = new GuildSkull(player);
             } catch (Exception ex) {
                 guildSkull = new GuildSkull(settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_DEFAULT_URL));
             }
-        }).execute();
+        });
     }
 
     public void addPotion(PotionEffect effect) {
-        getOnlineAsPlayers().forEach(p -> p.addPotionEffect(effect));
+        getOnlineAsPlayers().forEach(p -> SchedulerUtils.runEntity(guilds, p, () -> p.addPotionEffect(effect)));
     }
 
     public UUID getId() {
