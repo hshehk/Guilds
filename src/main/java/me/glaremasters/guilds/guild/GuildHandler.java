@@ -811,7 +811,7 @@ public class GuildHandler {
      */
     public void removePerms(final Permission permission, final OfflinePlayer offlinePlayer, final List<String> nodes) {
         if (settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)) {
-            SchedulerUtils.runAsync(guilds, () -> {
+            SchedulerUtils.runAsync(guildsPlugin, () -> {
                 for (final String node : nodes) {
                     if (!node.equals("")) {
                         permission.playerRemove(null, offlinePlayer, node);
@@ -835,7 +835,7 @@ public class GuildHandler {
      */
     public void addPerms(final Permission permission, final OfflinePlayer offlinePlayer, final List<String> nodes) {
         if (settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)) {
-            SchedulerUtils.runAsync(guilds, () -> {
+            SchedulerUtils.runAsync(guildsPlugin, () -> {
                 for (final String node : nodes) {
                     if (!node.equals("")) {
                         permission.playerAdd(null, offlinePlayer, node);
