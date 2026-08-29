@@ -39,6 +39,7 @@ enum class GuildRolePerm {
     OPEN_VAULT,
     TRANSFER_GUILD,
     TOGGLE_GUILD,
+    TOGGLE_PVP,
     ACTIVATE_BUFF,
     UPGRADE_GUILD,
     DEPOSIT_MONEY,

@@ -143,6 +143,14 @@ public class Guild {
         this.lastDefended = lastDefended;
     }
 
+    public boolean isPvp() {
+        return pvp;
+    }
+
+    public void setPvp(boolean pvp) {
+        this.pvp = pvp;
+    }
+
     public long getCreationDate() {
         return creationDate;
     }
@@ -182,6 +190,7 @@ public class Guild {
 
     private long lastDefended;
     private long creationDate;
+    private boolean pvp;
 
     /**
      * Get a member in the guild

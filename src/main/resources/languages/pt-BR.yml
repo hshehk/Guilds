@@ -1,5 +1,5 @@
 ---
-  pvp: "Ativa ou desativa o PvP entre os membros da sua Guilda."
+  pvp: "Ativa ou desativa o PvP entre os membros da sua Guilda"
 descriptions:
   accept: "Aceitar um convite de guilda"
   admin-addplayer: "Comando administrativo para adicionar um jogador em uma Guilda"

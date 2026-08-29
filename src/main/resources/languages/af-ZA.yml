@@ -1,5 +1,5 @@
 ---
-  pvp: "Aktiveer of deaktiveer PvP tussen lede van jou Gilde. Gebruik: /guild pvp <on|off>"
+  pvp: "Aktiveer of deaktiveer PvP tussen lede van jou Gilde"
 descriptions:
   accept: "Accept a guild invite"
   admin-addplayer: "Admin command to add a player to a Guild"

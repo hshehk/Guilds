@@ -1,5 +1,5 @@
 ---
-  pvp: "開啟或關閉公會成員之間的 PvP。用法：/guild pvp <on|off>"
+  pvp: "開啟或關閉公會成員之間的 PvP"
 descriptions:
   accept: "接受公會邀請"
   admin-addplayer: "[管理用功能] 將玩家添加到公會"

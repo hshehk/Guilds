@@ -1,5 +1,5 @@
 ---
-  pvp: "Povolí nebo zakáže PvP mezi členy vaší Guildy. Použití: /guild pvp <on|off>"
+  pvp: "Povolí"
 descriptions:
   accept: "Přijmout pozvánku do cechu"
   admin-addplayer: "Administrátorský příkaz pro přidání hráče do cechu"

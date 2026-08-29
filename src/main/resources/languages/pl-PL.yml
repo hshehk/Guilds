@@ -1,5 +1,5 @@
 ---
-  pvp: "Włącza lub wyłącza PvP pomiędzy członkami Twojej Gildii. Użycie: /guild pvp <on|off>"
+  pvp: "Włącza"
 descriptions:
   accept: "Zaakceptuj zaproszenie do gildii."
   admin-addplayer: "Komenda administratora aby zaprosić gracza do gildii"

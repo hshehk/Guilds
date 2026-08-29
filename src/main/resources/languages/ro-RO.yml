@@ -1,5 +1,5 @@
 ---
-  pvp: "Activează sau dezactivează PvP între membrii Guild-ului tău. Utilizare: /guild pvp <on|off>"
+  pvp: "Activează"
 descriptions:
   accept: "Accepta o invitatie in breasla"
   admin-addplayer: "Comanda pentru admini pentru a adauga un membru in breasla"

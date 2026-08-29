@@ -1,5 +1,5 @@
 ---
-  pvp: "길드원 간 PvP를 활성화하거나 비활성화합니다. 사용법: /guild pvp <on|off>"
+  pvp: "길드원 간 PvP를 활성화하거나 비활성화합니다. 사용법"
 descriptions:
   accept: "길드로부터의 초대를 수락합니다."
   admin-addplayer: "길드에 플레이어 를 추가하는 관리자 명령어입니다."

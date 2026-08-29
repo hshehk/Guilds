@@ -1,5 +1,5 @@
 ---
-  pvp: "Өөрийн Guild-ийн гишүүдийн хооронд PvP-г асаах эсвэл унтраана. Ашиглах: /guild pvp <on|off>"
+  pvp: "Өөрийн"
 descriptions:
   accept: "Accept a guild invite"
   admin-addplayer: "Admin command to add a player to a Guild"

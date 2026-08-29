@@ -1,5 +1,5 @@
 ---
-  pvp: "Aktiviert oder deaktiviert PvP zwischen Mitgliedern deiner Gilde."
+  pvp: "Aktiviert"
 descriptions:
   accept: "Eine Gildeneinladung annehmen"
   admin-addplayer: "Admin-Befehl, um einen Spieler einer Gilde hinzuzufügen"

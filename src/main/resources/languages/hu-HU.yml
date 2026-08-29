@@ -1,5 +1,5 @@
 ---
-  pvp: "Engedélyezi vagy letiltja a PvP-t a Céhed tagjai között. Használat: /guild pvp <on|off>"
+  pvp: "Engedélyezi"
 descriptions:
   accept: "Fogadjon el egy céh meghívást"
   admin-addplayer: "Adminisztrátori parancs egy játékos hozzáadásához a céhhez"

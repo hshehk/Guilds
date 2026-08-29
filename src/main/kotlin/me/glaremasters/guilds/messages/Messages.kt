@@ -139,6 +139,12 @@ enum class Messages : MessageKeyProvider {
 
     STATUS__SUCCESSFUL,
 
+    PVP__ON,
+    PVP__OFF,
+    PVP__ALREADY_ON,
+    PVP__ALREADY_OFF,
+    PVP__USAGE,
+
     RENAME__SUCCESSFUL,
 
     HOME__TELEPORTED,

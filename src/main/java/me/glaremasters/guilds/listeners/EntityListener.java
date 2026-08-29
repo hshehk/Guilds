@@ -139,7 +139,7 @@ public class EntityListener implements Listener {
 
         // Check if they are in the same guild and have permission to damage their guild members
         if (guildHandler.isSameGuild(player, damager) && !damager.hasPermission("guilds.ffa.guild")) {
-            event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
+            event.setCancelled(!guildHandler.getGuild(damager).isPvp());
             return;
         }
 
@@ -184,7 +184,7 @@ public class EntityListener implements Listener {
 
         // Check if they are in the same guild
         if (guildHandler.isSameGuild(damaged, damager) && damaged != damager && !damager.hasPermission("guilds.ffa.guild")) {
-            event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
+            event.setCancelled(!guildHandler.getGuild(damager).isPvp());
             return;
         }
 
@@ -216,7 +216,7 @@ public class EntityListener implements Listener {
         // Check if they are in the same guild
         if (guildHandler.isSameGuild(damagee, damager) && !damager.hasPermission("guilds.ffa.guild")) {
             arrow.setFireTicks(0);
-            event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
+            event.setCancelled(!guildHandler.getGuild(damager).isPvp());
             return;
         }
 
@@ -280,7 +280,7 @@ public class EntityListener implements Listener {
             if (entity instanceof Player) {
                 final Player player = (Player) entity;
                 if (guildHandler.isSameGuild(shooter, player) && shooter != player && !shooter.hasPermission("guilds.ffa.guild")) {
-                    event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
+                    event.setCancelled(!guildHandler.getGuild(shooter).isPvp());
                     return;
                 }
                 if (guildHandler.isAlly(shooter, player) && !shooter.hasPermission("guilds.ffa.ally")) {

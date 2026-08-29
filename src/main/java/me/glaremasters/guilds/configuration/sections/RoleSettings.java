@@ -89,6 +89,9 @@ public class RoleSettings implements SettingsHolder {
     public static final Property<Boolean> ZERO_TG =
             newProperty("roles.0.permissions.toggle-guild", true);
 
+    public static final Property<Boolean> ZERO_TP =
+            newProperty("roles.0.permissions.toggle-pvp", true);
+
     public static final Property<Boolean> ZERO_TRG =
             newProperty("roles.0.permissions.transfer-guild", true);
 
@@ -181,6 +184,9 @@ public class RoleSettings implements SettingsHolder {
 
     public static final Property<Boolean> ONE_TG =
             newProperty("roles.1.permissions.toggle-guild", false);
+
+    public static final Property<Boolean> ONE_TP =
+            newProperty("roles.1.permissions.toggle-pvp", true);
 
     public static final Property<Boolean> ONE_TRG =
             newProperty("roles.1.permissions.transfer-guild", false);
@@ -275,6 +281,9 @@ public class RoleSettings implements SettingsHolder {
     public static final Property<Boolean> TWO_TG =
             newProperty("roles.2.permissions.toggle-guild", false);
 
+    public static final Property<Boolean> TWO_TP =
+            newProperty("roles.2.permissions.toggle-pvp", false);
+
     public static final Property<Boolean> TWO_TRG =
             newProperty("roles.2.permissions.transfer-guild", false);
 
@@ -367,6 +376,9 @@ public class RoleSettings implements SettingsHolder {
 
     public static final Property<Boolean> THREE_TG =
             newProperty("roles.3.permissions.toggle-guild", false);
+
+    public static final Property<Boolean> THREE_TP =
+            newProperty("roles.3.permissions.toggle-pvp", false);
 
     public static final Property<Boolean> THREE_TRG =
             newProperty("roles.3.permissions.transfer-guild", false);

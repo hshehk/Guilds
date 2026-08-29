@@ -1,5 +1,5 @@
 ---
-  pvp: "تمكين أو تعطيل PvP بين أعضاء نقابتك. الاستخدام: /guild pvp <on|off>"
+  pvp: "تمكين"
 descriptions:
   accept: "Accept a guild invite"
   admin-addplayer: "Admin command to add a player to a Guild"

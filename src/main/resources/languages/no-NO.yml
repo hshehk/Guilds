@@ -1,5 +1,5 @@
 ---
-  pvp: "Aktiver eller deaktiver PvP mellom medlemmer av lauget ditt. Bruk: /guild pvp <on|off>"
+  pvp: "Aktiver"
 descriptions:
   accept: "Aksepter en guild innvitasjon"
   admin-addplayer: "Admin kommando for å ligge til en spiller på en guild"

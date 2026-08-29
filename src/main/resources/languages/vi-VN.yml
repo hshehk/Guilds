@@ -1,5 +1,5 @@
 ---
-  pvp: "Bật hoặc tắt PvP giữa các thành viên trong Guild của bạn."
+  pvp: "Bật"
 descriptions:
   accept: "Chấp nhận một lời mời tham gia guild"
   admin-addplayer: "Lệnh Admin để thêm một người chơi vào một Guild"

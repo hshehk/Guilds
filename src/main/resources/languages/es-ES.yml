@@ -1,5 +1,5 @@
 ---
-  pvp: "Activa o desactiva el PvP entre los miembros de tu Gremio."
+  pvp: "Activa o desactiva el PvP entre los miembros de tu Gremio"
 descriptions:
   accept: "Aceptar una invitación de equipo"
   admin-addplayer: "Comando administrativo para agregar un jugador a un equipo"
