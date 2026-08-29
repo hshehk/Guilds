@@ -1,4 +1,5 @@
 ---
+  pvp: "길드원 간 PvP를 활성화하거나 비활성화합니다. 사용법: /guild pvp <on|off>"
 descriptions:
   accept: "길드로부터의 초대를 수락합니다."
   admin-addplayer: "길드에 플레이어 를 추가하는 관리자 명령어입니다."
@@ -308,6 +309,13 @@ backup:
   finished: "&a모든 길드 데이터가 백업되어 플러그인 폴더에 저장되었습니다."
   warning: "&c플러그인의 모든 데이터를 백업하려고 합니다. 이때 무리한 행동을 하지 않도록 하십시오. 계속하려면 /guilds Confirm을 입력하고 취소하려면 /guilds cancel을 입력합니다."
   cancelled: "백업을 성공적으로 취소했습니다."
+pvp:
+  on: "길드 PvP가 켜졌습니다."
+  off: "길드 PvP가 꺼졌습니다."
+  already-on: "길드 PvP가 이미 켜져 있습니다."
+  already-off: "길드 PvP가 이미 꺼져 있습니다."
+  usage: "사용법: /guild pvp <on|off>"
+
 help:
   header: "<c3>=== </c3><c1>도움말 표시 </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   detailed-header: "<c3>=== </c3><c1></c1><c2>{commandprefix}{command}</c2><c3> ===</c3>에 대한 자세한 도움말 표시"

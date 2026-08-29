@@ -1,4 +1,5 @@
 ---
+  pvp: "Aktiverar eller inaktiverar PvP mellan medlemmar i din Guild. Användning: /guild pvp <on|off>"
 descriptions:
   accept: "Acceptera guild inbjudan"
   admin-addplayer: "Admin kommandon för att lägga till en spelare i en guild"
@@ -308,6 +309,13 @@ backup:
   finished: "&aAll Guilds data has been backed up and placed in your plugins folder."
   warning: "&cYou are about to make a backup of all the data for the plugin. Please make sure not to do anything intensive during this. Type /guilds confirm to continue, type /guilds cancel to cancel."
   cancelled: "aYou've successfully cancelled the backup."
+pvp:
+  on: "Guild PvP är PÅ."
+  off: "Guild PvP är AV."
+  already-on: "Guild PvP är redan PÅ."
+  already-off: "Guild PvP är redan AV."
+  usage: "Användning: /guild pvp <on|off>"
+
 help:
   header: "<c3>=== </c3><c1>Showing help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   detailed-header: "<c3>=== </c3><c1>Showing detailed help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"

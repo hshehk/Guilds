@@ -1,4 +1,5 @@
 ---
+  pvp: "Activează sau dezactivează PvP între membrii Guild-ului tău. Utilizare: /guild pvp <on|off>"
 descriptions:
   accept: "Accepta o invitatie in breasla"
   admin-addplayer: "Comanda pentru admini pentru a adauga un membru in breasla"
@@ -308,6 +309,13 @@ backup:
   finished: "&aAll Guilds data has been backed up and placed in your plugins folder."
   warning: "&cYou are about to make a backup of all the data for the plugin. Please make sure not to do anything intensive during this. Type /guilds confirm to continue, type /guilds cancel to cancel."
   cancelled: "aYou've successfully cancelled the backup."
+pvp:
+  on: "PvP-ul guild-ului este PORNIT."
+  off: "PvP-ul guild-ului este OPRIT."
+  already-on: "PvP-ul guild-ului este deja PORNIT."
+  already-off: "PvP-ul guild-ului este deja OPRIT."
+  usage: "Utilizare: /guild pvp <on|off>"
+
 help:
   header: "<c3>=== </c3><c1>Showing help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   detailed-header: "<c3>=== </c3><c1>Showing detailed help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"

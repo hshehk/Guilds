@@ -1,4 +1,5 @@
 ---
+  pvp: "Ota PvP käyttöön tai pois käytöstä kiltasi jäsenten välillä. Käyttö: /guild pvp <on|off>"
 descriptions:
   accept: "Accept a guild invite"
   admin-addplayer: "Admin command to add a player to a Guild"
@@ -201,3 +202,10 @@ codes:
   max: "&cYou already have too many active invite codes in your guild!"
 vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
+
+pvp:
+  on: "Kiltan PvP on nyt PÄÄLLÄ."
+  off: "Kiltan PvP on nyt POIS."
+  already-on: "Kiltan PvP on jo PÄÄLLÄ."
+  already-off: "Kiltan PvP on jo POIS."
+  usage: "Käyttö: /guild pvp <on|off>"

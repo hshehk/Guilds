@@ -1,4 +1,5 @@
 ---
+  pvp: "开启或关闭公会成员之间的 PvP。用法：/guild pvp <on|off>"
 descriptions:
   accept: "接受公会邀请"
   admin-addplayer: "以管理员身份强制从公会中删除玩家"
@@ -308,6 +309,13 @@ backup:
   finished: "&a所有的Guilds数据已经备份成功并且放入插件文件夹中了."
   warning: "&a你即将备份此插件的所有数据. 请确保没有其他会消耗大量运算的工作. 输入 /guilds confirm 继续或输入 /guilds cancel 取消."
   cancelled: "a你已取消此次备份."
+pvp:
+  on: "公会 PvP 已开启。"
+  off: "公会 PvP 已关闭。"
+  already-on: "公会 PvP 已经开启。"
+  already-off: "公会 PvP 已经关闭。"
+  usage: "用法：/guild pvp <on|off>"
+
 help:
   header: "<c3>===</c3>显示帮助</c1><c2>{commandprefix}{command}</c2><c3>===</c3>"
   detailed-header: "<c3>=== </c3><c1>显示帮助详细</c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"

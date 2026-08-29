@@ -80,6 +80,7 @@ descriptions:
   request: "申請加入公會"
   sethome: "設定您的公會領地傳送點"
   status: "更改公會狀態列"
+  pvp: "開關公會成員間的 PvP"
   transfer: "將您的公會轉移給其他玩家"
   unclaim: "取消你的公會領地"
   upgrade: "提升公會階級!"
@@ -219,6 +220,12 @@ upgrade:
 prefix:
   successful: "&a已成功更改工會前綴成 {prefix}！"
   disabled: "&c目前禁用前綴功能"
+pvp:
+  on: "公會 PvP 已開啟。"
+  off: "公會 PvP 已關閉。"
+  already-on: "公會 PvP 已經開啟。"
+  already-off: "公會 PvP 已經關閉。"
+  usage: "用法：/guild pvp <on|off>"
 status:
   successful: "&a公會狀態已更新為 {status}！"
 rename:

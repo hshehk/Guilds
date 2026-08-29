@@ -1,4 +1,5 @@
 ---
+  pvp: "Activa o desactiva el PvP entre los miembros de tu Gremio."
 descriptions:
   accept: "Aceptar una invitación de equipo"
   admin-addplayer: "Comando administrativo para agregar un jugador a un equipo"
@@ -308,6 +309,13 @@ backup:
   finished: "&aTodos los datos de los Gremios han sido respaldados y colocados en la carpeta de plugins."
   warning: "&cEstás a punto de hacer una copia de seguridad de todos los datos del plugin. Por favor, asegúrate de no hacer nada intensivo durante esto. Escribe '/guilds confirm' para continuar, escribe '/guilds cancel' para cancelar."
   cancelled: "&aHas cancelado la copia de seguridad con éxito."
+pvp:
+  on: "El PvP del gremio está ACTIVADO."
+  off: "El PvP del gremio está DESACTIVADO."
+  already-on: "El PvP del gremio ya está ACTIVADO."
+  already-off: "El PvP del gremio ya está DESACTIVADO."
+  usage: "Uso: /guild pvp <on|off>"
+
 help:
   header: "<c3>=== </c3><c1>Mostrando ayuda detallada para </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   detailed-header: "<c3>=== </c3><c1>Mostrando ayuda detallada para </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"

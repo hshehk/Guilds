@@ -1,4 +1,5 @@
 ---
+  pvp: "Aktiviert oder deaktiviert PvP zwischen Mitgliedern deiner Gilde."
 descriptions:
   accept: "Eine Gildeneinladung annehmen"
   admin-addplayer: "Admin-Befehl, um einen Spieler einer Gilde hinzuzufügen"
@@ -308,6 +309,13 @@ backup:
   finished: "&aSämtliche Guilds-Daten wurden gesichert und in deinem Plugins-Ordner gespeichert."
   warning: "&cDu bist dabei eine Sicherung sämtlicher Plugin-Daten zu erstellen. Bitte führe währenddessen keine leistungsintensiven Aktionen aus. Tippe /guilds confirm um fortzufahren, tippe /guilds cancel um abzubrechen."
   cancelled: "&aDu hast die Sicherung erfolgreich abgebrochen."
+pvp:
+  on: "Gilden-PvP ist AN."
+  off: "Gilden-PvP ist AUS."
+  already-on: "Gilden-PvP ist bereits AN."
+  already-off: "Gilden-PvP ist bereits AUS."
+  usage: "Verwendung: /guild pvp <on|off>"
+
 help:
   header: "<c3>=== </c3><c1>Zeige Hilfe für </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   detailed-header: "<c3>=== </c3><c1>Zeige detaillierte Hilfe für </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"

@@ -1,4 +1,5 @@
 ---
+  pvp: "Engedélyezi vagy letiltja a PvP-t a Céhed tagjai között. Használat: /guild pvp <on|off>"
 descriptions:
   accept: "Fogadjon el egy céh meghívást"
   admin-addplayer: "Adminisztrátori parancs egy játékos hozzáadásához a céhhez"
@@ -308,6 +309,13 @@ backup:
   finished: "&aAll Guilds data has been backed up and placed in your plugins folder."
   warning: "&cYou are about to make a backup of all the data for the plugin. Please make sure not to do anything intensive during this. Type /guilds confirm to continue, type /guilds cancel to cancel."
   cancelled: "aYou've successfully cancelled the backup."
+pvp:
+  on: "A céh PvP-je BE van kapcsolva."
+  off: "A céh PvP-je KI van kapcsolva."
+  already-on: "A céh PvP-je már BE van kapcsolva."
+  already-off: "A céh PvP-je már KI van kapcsolva."
+  usage: "Használat: /guild pvp <on|off>"
+
 help:
   header: "<c3>=== </c3><c1>Showing help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   detailed-header: "<c3>=== </c3><c1>Showing detailed help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"

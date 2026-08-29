@@ -1,4 +1,5 @@
 ---
+  pvp: "開啟或關閉公會成員之間的 PvP。用法：/guild pvp <on|off>"
 descriptions:
   accept: "接受公會邀請"
   admin-addplayer: "[管理用功能] 將玩家添加到公會"
@@ -308,6 +309,13 @@ backup:
   finished: "&aAll Guilds data has been backed up and placed in your plugins folder."
   warning: "&cYou are about to make a backup of all the data for the plugin. Please make sure not to do anything intensive during this. Type /guilds confirm to continue, type /guilds cancel to cancel."
   cancelled: "aYou've successfully cancelled the backup."
+pvp:
+  on: "公會 PvP 已開啟。"
+  off: "公會 PvP 已關閉。"
+  already-on: "公會 PvP 已經開啟。"
+  already-off: "公會 PvP 已經關閉。"
+  usage: "用法：/guild pvp <on|off>"
+
 help:
   header: "<c3>===</c3>說明書： </c1><c2>{commandprefix}{command}</c2><c3>===</c3>"
   detailed-header: "<c3>=== </c3><c1>顯示幫助詳細</c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"

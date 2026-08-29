@@ -1,4 +1,5 @@
 ---
+  pvp: "Włącza lub wyłącza PvP pomiędzy członkami Twojej Gildii. Użycie: /guild pvp <on|off>"
 descriptions:
   accept: "Zaakceptuj zaproszenie do gildii."
   admin-addplayer: "Komenda administratora aby zaprosić gracza do gildii"
@@ -308,6 +309,13 @@ backup:
   finished: "&aKopia zapasowa danych Gildii została utworzona i umieszczone w folderze pluginu."
   warning: "&cZamierzasz utworzyć kopię zapasową wszystkich danych dla pluginu. Upewnij się, że nie robisz nic obciążającego serwer. Wpisz /guilds confirm,aby kontynuować, wpisz /guilds cancel, aby anulować."
   cancelled: "&aPomyślnie anulowano tworzenie kopii zapasowej."
+pvp:
+  on: "PvP gildii jest WŁĄCZONE."
+  off: "PvP gildii jest WYŁĄCZONE."
+  already-on: "PvP gildii jest już WŁĄCZONE."
+  already-off: "PvP gildii jest już WYŁĄCZONE."
+  usage: "Użycie: /guild pvp <on|off>"
+
 help:
   header: "<c3>=== </c3><c1>Pokazuje pomoc dla </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   detailed-header: "<c3>=== </c3><c1>Wyświetlenie szczegółowej pomocy dla </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"

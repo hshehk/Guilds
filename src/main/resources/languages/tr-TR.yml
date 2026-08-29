@@ -1,4 +1,5 @@
 ---
+  pvp: "Loncanızın üyeleri arasındaki PvPyi açar veya kapatır."
 descriptions:
   accept: "Lonca davetini kabul et"
   admin-addplayer: "Bir Loncaya oyuncu eklemek için yönetici komutu"
@@ -308,6 +309,13 @@ backup:
   finished: "&aTüm Guilds verileri yedeklendi ve eklentiler klasörünüze yerleştirildi."
   warning: "&cEklenti için tüm verilerin yedeğini almak üzeresiniz. Lütfen bu sırada yoğun bir şey yapmadığınızdan emin olun. Devam etmek için / guilds yazın, iptal etmek için /guilds cancel yazın."
   cancelled: "&aYedeklemeyi başarıyla iptal ettiniz."
+pvp:
+  on: "Lonca PvP AÇILDI."
+  off: "Lonca PvP KAPATILDI."
+  already-on: "Lonca PvP zaten AÇIK."
+  already-off: "Lonca PvP zaten KAPALI."
+  usage: "Kullanım: /guild pvp <on|off>"
+
 help:
   header: "<c3>=== </c3><c1>İçin yardım gösteriliyor </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   detailed-header: "<c3>=== </c3><c1>İçin ayrıntılı yardım gösteriliyor </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"

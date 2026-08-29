@@ -1,4 +1,5 @@
 ---
+  pvp: "Abilita o disabilita il PvP tra i membri della tua Gilda."
 descriptions:
   accept: "Accetta un invito alla gilda"
   admin-addplayer: "Comando da Admin per aggiungere un giocatore a una gilda"
@@ -308,6 +309,13 @@ backup:
   finished: "&aTutti i dati delle Gilde sono stati salvati e posti nella tua cartella dei plugin."
   warning: "&cStai per fare il backup di tutti i dati per il plugin. Sei pregato di assicurarti di non fare nulla di intenso nel mentre. Digita /guilds confirm per continuare, digita /guilds cancel per annullare."
   cancelled: "aHai annullato il backup con successo."
+pvp:
+  on: "Il PvP della gilda è ATTIVO."
+  off: "Il PvP della gilda è DISATTIVO."
+  already-on: "Il PvP della gilda è già ATTIVO."
+  already-off: "Il PvP della gilda è già DISATTIVO."
+  usage: "Uso: /guild pvp <on|off>"
+
 help:
   header: "<c3>=== </c3><c1>Mostrando aiuto per </c1><c2>{commandprefix}{command}</c2><c3> === </c3>"
   detailed-header: "<c3>=== </c3><c1>Mostrando aiuto dettagliato per </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"

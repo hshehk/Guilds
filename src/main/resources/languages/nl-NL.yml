@@ -1,4 +1,5 @@
 ---
+  pvp: "Schakel PvP tussen leden van je Guild in of uit. Gebruik: /guild pvp <on|off>"
 descriptions:
   accept: "Accepteer een Guild uitnodiging"
   admin-addplayer: "Admin command om een speler aan een Guild toe te voegen"
@@ -308,6 +309,13 @@ backup:
   finished: "&aAll Guilds data has been backed up and placed in your plugins folder."
   warning: "&cYou are about to make a backup of all the data for the plugin. Please make sure not to do anything intensive during this. Type /guilds confirm to continue, type /guilds cancel to cancel."
   cancelled: "aYou've successfully cancelled the backup."
+pvp:
+  on: "Guild PvP staat AAN."
+  off: "Guild PvP staat UIT."
+  already-on: "Guild PvP staat al AAN."
+  already-off: "Guild PvP staat al UIT."
+  usage: "Gebruik: /guild pvp <on|off>"
+
 help:
   header: "<c3>=== </c3><c1>Hulp tonen voor </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   detailed-header: "<c3>=== </c3><c1>Gedetailleerde hulp tonen voor </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
