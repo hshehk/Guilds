@@ -26,12 +26,15 @@ package me.glaremasters.guilds.guild;
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.CommandManager;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
+import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.utils.SchedulerUtils;
 import me.glaremasters.guilds.messages.Messages;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
@@ -440,7 +443,7 @@ public class Guild {
         getOnlineMembers().forEach(m -> {
             final Player player = Bukkit.getPlayer(m.getUuid());
             if (player != null) {
-                SchedulerUtils.runEntity(guilds, player, () -> manager.getCommandIssuer(player).sendInfo(key, replacements));
+                SchedulerUtils.runEntity(JavaPlugin.getPlugin(Guilds.class), player, () -> manager.getCommandIssuer(player).sendInfo(key, replacements));
             }
         });
     }
@@ -450,7 +453,7 @@ public class Guild {
      * @param message the message to send
      */
     public void sendMessage(String message) {
-        getOnlineAsPlayers().forEach(m -> SchedulerUtils.runEntity(guilds, m, () -> m.sendMessage(message)));
+        getOnlineAsPlayers().forEach(m -> SchedulerUtils.runEntity(JavaPlugin.getPlugin(Guilds.class), m, () -> m.sendMessage(message)));
     }
 
     /**
@@ -586,7 +589,7 @@ public class Guild {
     }
 
     public void updateGuildSkull(Player player, SettingsManager settingsManager) {
-        SchedulerUtils.runEntity(guilds, player, () -> {
+        SchedulerUtils.runEntity(JavaPlugin.getPlugin(Guilds.class), player, () -> {
             try {
                 guildSkull = new GuildSkull(player);
             } catch (Exception ex) {
@@ -596,7 +599,7 @@ public class Guild {
     }
 
     public void addPotion(PotionEffect effect) {
-        getOnlineAsPlayers().forEach(p -> SchedulerUtils.runEntity(guilds, p, () -> p.addPotionEffect(effect)));
+        getOnlineAsPlayers().forEach(p -> SchedulerUtils.runEntity(JavaPlugin.getPlugin(Guilds.class), p, () -> p.addPotionEffect(effect)));
     }
 
     public UUID getId() {
