@@ -13,6 +13,13 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
 
     repositories {
+        maven("https://repo.papermc.io/repository/maven-public/") {
+            name = "papermc"
+            content {
+                includeGroup("io.papermc.paper")
+            }
+        }
+
         mavenCentral()
 
         maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") {
